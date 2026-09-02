@@ -1,36 +1,5 @@
-name: Build and validate
-
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-permissions:
-  contents: read
-
-jobs:
-  application:
-    name: Restore and build ASP.NET Core app
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out source
-        uses: actions/checkout@v4
-
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: 10.0.x
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build application
-        run: dotnet build --configuration Release --no-restore
-
   container:
-    name: Build Docker image
+    name: Build and publish Docker image
     runs-on: ubuntu-latest
     needs: application
 
@@ -38,5 +7,17 @@ jobs:
       - name: Check out source
         uses: actions/checkout@v4
 
-      - name: Build image
-        run: docker build --tag employeecrudmvc:ci .
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: hirendradxbrite
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            hirendradxbrite/employeecrudmvc:latest
+            hirendradxbrite/employeecrudmvc:${{ github.sha }}
