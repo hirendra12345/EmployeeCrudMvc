@@ -1,0 +1,8 @@
+@model EmployeeCrudMvc.Models.Employee
+@{ ViewData["Title"] = "Add employee"; }
+<h1>Add employee</h1>
+<form asp-action="Create" class="col-lg-8">
+    <partial name="_EmployeeForm" model="Model" />
+    <div class="mt-4"><button class="btn btn-primary" type="submit">Save</button> <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a></div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

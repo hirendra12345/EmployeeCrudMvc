@@ -1,0 +1,14 @@
+# Secrets and local configuration
+.env
+
+# .NET build output and IDE files
+bin/
+obj/
+.vs/
+
+# User-specific files
+*.user
+*.suo
+
+# Docker data and logs
+*.log
